@@ -8,20 +8,58 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+static NSString *CLIENT_ID = @"ae97b75b4af64898b7077cd7ecefd21d";
+static NSString *CLIENT_SECRET = @"20fa3ad5d4934f94aaebc366244cc588";
 
+@interface ViewController ()
+@property (strong, nonatomic) NSMutableArray *instagramPictures;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    
+
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark Networking
+
+#pragma mark CollectionView DataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.instagramPictures.count;
 }
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"gram" forIndexPath:indexPath];
+
+    
+    return cell;
+}
+
+#pragma mark CollectionView Delegate
+
+
+#pragma mark Button Actions
+
+- (IBAction)loginTapped:(UIBarButtonItem *)sender {
+}
+
+- (IBAction)refreshTapped:(UIBarButtonItem *)sender {
+}
+
+
+#pragma mark Navigation
+ 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UICollectionViewCell *)senderCell {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+    
+}
+ 
 
 @end

@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BigImageViewController.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIImageView *cellImageView;
 
+- (IBAction)loginTapped:(UIBarButtonItem *)sender;
+
+- (IBAction)refreshTapped:(UIBarButtonItem *)sender;
 
 @end
 
