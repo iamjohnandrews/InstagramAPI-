@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BigImageViewController.h"
+#import "GramCollectionViewCell.h"
 
 @interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

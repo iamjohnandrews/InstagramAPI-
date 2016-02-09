@@ -23,7 +23,7 @@ static NSString *CLIENT_SECRET = @"20fa3ad5d4934f94aaebc366244cc588";
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     
-
+    self.title = @"Your Instagram";
 }
 
 #pragma mark Networking
@@ -35,7 +35,7 @@ static NSString *CLIENT_SECRET = @"20fa3ad5d4934f94aaebc366244cc588";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"gram" forIndexPath:indexPath];
+    GramCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"gram" forIndexPath:indexPath];
 
     
     return cell;
@@ -55,9 +55,15 @@ static NSString *CLIENT_SECRET = @"20fa3ad5d4934f94aaebc366244cc588";
 
 #pragma mark Navigation
  
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UICollectionViewCell *)senderCell {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(GramCollectionViewCell *)senderCell {
  // Get the new view controller using [segue destinationViewController].
  // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"collectionToBigImageSegue"]) {
+        BigImageViewController *bigImageVC = [[BigImageViewController alloc] init];
+        bigImageVC.bigImageView = senderCell.instagramImageView;
+        bigImageVC.imageTitle;
+    }
     
 }
  
