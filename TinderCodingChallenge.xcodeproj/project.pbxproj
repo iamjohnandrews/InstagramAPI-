@@ -18,6 +18,8 @@
 		7FEF7BAA1C697DE9001DE497 /* TinderCodingChallengeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7BA91C697DE9001DE497 /* TinderCodingChallengeUITests.m */; };
 		7FEF7BBA1C6A4F35001DE497 /* BigImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7BB91C6A4F35001DE497 /* BigImageViewController.m */; };
 		7FEF7BBD1C6A57A1001DE497 /* GramCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7BBC1C6A57A1001DE497 /* GramCollectionViewCell.m */; };
+		7FEF7BC11C6A6465001DE497 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7BC01C6A6465001DE497 /* LoginViewController.m */; };
+		7FEF7BC31C6A6E83001DE497 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FEF7BC21C6A6E83001DE497 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,9 @@
 		7FEF7BB91C6A4F35001DE497 /* BigImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BigImageViewController.m; sourceTree = "<group>"; };
 		7FEF7BBB1C6A57A1001DE497 /* GramCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GramCollectionViewCell.h; sourceTree = "<group>"; };
 		7FEF7BBC1C6A57A1001DE497 /* GramCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GramCollectionViewCell.m; sourceTree = "<group>"; };
+		7FEF7BBF1C6A6465001DE497 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		7FEF7BC01C6A6465001DE497 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		7FEF7BC21C6A6E83001DE497 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8A022F9E2DD5FFB41647A7B6 /* Pods-TinderCodingChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderCodingChallenge.release.xcconfig"; path = "Pods/Target Support Files/Pods-TinderCodingChallenge/Pods-TinderCodingChallenge.release.xcconfig"; sourceTree = "<group>"; };
 		FF985848104329B4478AAFBE /* libPods-TinderCodingChallenge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TinderCodingChallenge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -68,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FEF7BC31C6A6E83001DE497 /* CoreLocation.framework in Frameworks */,
 				1FC66E37F4BF3FC53D1D051E /* libPods-TinderCodingChallenge.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +98,7 @@
 		5F21EE16FB309DD5B965E624 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7FEF7BC21C6A6E83001DE497 /* CoreLocation.framework */,
 				FF985848104329B4478AAFBE /* libPods-TinderCodingChallenge.a */,
 			);
 			name = Frameworks;
@@ -177,6 +184,8 @@
 				7FEF7B8B1C697DE8001DE497 /* ViewController.m */,
 				7FEF7BB81C6A4F35001DE497 /* BigImageViewController.h */,
 				7FEF7BB91C6A4F35001DE497 /* BigImageViewController.m */,
+				7FEF7BBF1C6A6465001DE497 /* LoginViewController.h */,
+				7FEF7BC01C6A6465001DE497 /* LoginViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -357,6 +366,7 @@
 			files = (
 				7FEF7B8C1C697DE8001DE497 /* ViewController.m in Sources */,
 				7FEF7BBD1C6A57A1001DE497 /* GramCollectionViewCell.m in Sources */,
+				7FEF7BC11C6A6465001DE497 /* LoginViewController.m in Sources */,
 				7FEF7B891C697DE8001DE497 /* AppDelegate.m in Sources */,
 				7FEF7B861C697DE8001DE497 /* main.m in Sources */,
 				7FEF7BBA1C6A4F35001DE497 /* BigImageViewController.m in Sources */,

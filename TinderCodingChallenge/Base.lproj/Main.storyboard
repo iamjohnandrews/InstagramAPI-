@@ -77,11 +77,54 @@
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="qgy-UZ-jTP" id="fEP-wh-PVE"/>
+                        <outlet property="loginButton" destination="jEl-Hd-nHr" id="gvy-lp-vWy"/>
+                        <outlet property="refreshButton" destination="TYa-6T-hix" id="CHh-Jk-acy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1247" y="387"/>
+            <point key="canvasLocation" x="1247" y="520"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="eUH-GI-vpX">
+            <objects>
+                <viewController storyboardIdentifier="loginVC" id="2sn-eY-nQJ" customClass="LoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="I0P-Kl-B5h"/>
+                        <viewControllerLayoutGuide type="bottom" id="EoC-VP-aKp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1Lx-ZT-aV4">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qyv-zy-WmL">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kai-7y-tdk">
+                                <rect key="frame" x="20" y="20" width="46" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="backTapped:" destination="2sn-eY-nQJ" eventType="touchUpInside" id="x5U-YM-RO5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qyv-zy-WmL" firstAttribute="leading" secondItem="1Lx-ZT-aV4" secondAttribute="leading" id="CJt-ft-Pic"/>
+                            <constraint firstAttribute="trailing" secondItem="qyv-zy-WmL" secondAttribute="trailing" id="cFK-mQ-Qwd"/>
+                            <constraint firstItem="qyv-zy-WmL" firstAttribute="top" secondItem="1Lx-ZT-aV4" secondAttribute="top" id="fQs-I3-6du"/>
+                            <constraint firstItem="qyv-zy-WmL" firstAttribute="bottom" secondItem="EoC-VP-aKp" secondAttribute="top" id="uio-Qe-PzC"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="kai-7y-tdk" id="Ge4-Ud-YlB"/>
+                        <outlet property="webView" destination="qyv-zy-WmL" id="Mkv-ER-a4e"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TIT-36-cf8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2014" y="872"/>
         </scene>
         <!--Big Image View Controller-->
         <scene sceneID="hGL-Lu-Emn">
@@ -115,7 +158,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QJV-Qj-pHi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1917" y="388"/>
+            <point key="canvasLocation" x="2014" y="199"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WpT-Ot-3FO">
@@ -133,7 +176,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZMr-6e-2hL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="325" y="1047"/>
+            <point key="canvasLocation" x="559" y="520"/>
         </scene>
     </scenes>
 </document>

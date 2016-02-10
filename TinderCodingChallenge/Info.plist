@@ -36,5 +36,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string></string>
+    <key>InstagramAppClientId</key>
+    <string>ae97b75b4af64898b7077cd7ecefd21d</string>
+    <key>InstagramAppRedirectURL</key>
+    <string>http://www.soothsayerlabs.com/</string>
+    
 </dict>
 </plist>

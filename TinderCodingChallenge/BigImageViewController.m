@@ -7,6 +7,7 @@
 //
 
 #import "BigImageViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface BigImageViewController ()
 
@@ -17,9 +18,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = self.imageTitle;
 }
 
-
+- (void)setBigImageURL:(NSURL *)bigImageURL {
+    [self.bigImageView setImageWithURL:bigImageURL];
+}
 
 @end

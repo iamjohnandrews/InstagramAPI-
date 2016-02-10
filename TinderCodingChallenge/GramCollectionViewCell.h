@@ -10,5 +10,8 @@
 
 @interface GramCollectionViewCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *instagramImageView;
-@property (strong, nonatomic) NSString *imageURL;
+@property (strong, nonatomic) NSURL *imageURL;
+@property (strong, nonatomic) NSURL *bigImageURL;
+@property (strong, nonatomic) NSString *location;
+
 @end
