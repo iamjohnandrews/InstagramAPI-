@@ -115,11 +115,13 @@ static NSInteger feedCount = 20;
 }
 
 - (void)getUsersInstagramPictures:(NSString *)maxID {
+
     if ([[InstagramEngine sharedEngine] accessToken]) {
         ViewController *__weak weakSelf = self;
 
         [[InstagramEngine sharedEngine] getSelfFeedWithCount:feedCount
-                                                       maxId:maxID success:^(NSArray<InstagramMedia *> * _Nonnull media, InstagramPaginationInfo * _Nonnull paginationInfo) {
+                                                       maxId:maxID
+                                                     success:^(NSArray<InstagramMedia *> * _Nonnull media, InstagramPaginationInfo * _Nonnull paginationInfo) {
                                                            weakSelf.nextMaxId = paginationInfo.nextMaxId;
                                                            [self.instagramPictures addObjectsFromArray:media];
                                                            [self.collectionView reloadData];
@@ -137,6 +139,7 @@ static NSInteger feedCount = 20;
 
 - (void)retrieveInstagramPicturesPostAuthorization {
     [self fetchInstagramPictures];
+    [self setUpNavBarUI];
 }
 
 #pragma mark - CLLocation Manager Delegate
@@ -145,18 +148,13 @@ static NSInteger feedCount = 20;
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     
+        //assumes, for this demo app, that user always accepts so no delegate method didChangeAuthorizationStatus:
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways ||
         [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [self.locationManager startUpdatingLocation];
     } else {
         [self.locationManager requestWhenInUseAuthorization];
     }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    //assumes, for this demo app, that user always accepts
-    NSLog(@"location status %d", status);
-    [self.locationManager startUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
@@ -197,6 +195,7 @@ static NSInteger feedCount = 20;
 - (IBAction)loginTapped:(UIBarButtonItem *)sender {
     if (!self.isValidSession) {
         LoginViewController *loginVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+        loginVC.fetchDelegate = self;
         [self presentViewController:loginVC animated:YES completion:^{
             [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURL]]];
         }];

@@ -17,7 +17,7 @@
 @interface LoginViewController : UIViewController <UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
-@property (strong, nonatomic) id<FetchInstagramPicsAfterAuthorization> fetchDelegate;
+@property (weak, nonatomic) id<FetchInstagramPicsAfterAuthorization> fetchDelegate;
 
 - (IBAction)backTapped:(UIButton *)sender;
 

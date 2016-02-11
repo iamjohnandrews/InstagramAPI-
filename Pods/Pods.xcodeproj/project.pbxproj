@@ -755,7 +755,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 191B2BACA46AF0E426EBF59691C73692 /* InstagramKit-Private.xcconfig */;
 			buildSettings = {
+				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "Target Support Files/InstagramKit/InstagramKit-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
