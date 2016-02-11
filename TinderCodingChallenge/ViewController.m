@@ -8,17 +8,19 @@
 
 #import "ViewController.h"
 #import "InstagramKit.h"
+#import "Instagram.h"
 
 static NSString *CLIENT_ID = @"ae97b75b4af64898b7077cd7ecefd21d";
 static NSString *CLIENT_SECRET = @"20fa3ad5d4934f94aaebc366244cc588";
-static NSInteger feedCount = 20;
+
+static NSString *InstagramUserFeedBaseURL = @"https://api.instagram.com/v1/users/self/media/recent/?access_token=";
+static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locations/search";
 
 @interface ViewController ()
 @property (strong, nonatomic) NSMutableArray *instagramPictures;
 @property (nonatomic) BOOL isValidSession;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
 @property (strong, nonatomic) CLLocation *currentLocation;
-@property (strong, nonatomic) NSString *nextMaxId;
 
 @end
 
@@ -43,6 +45,13 @@ static NSInteger feedCount = 20;
 }
 
 #pragma mark UI
+
+- (void)updateCollectionView {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [self.spinner stopAnimating];
+        [self.collectionView reloadData];
+    }];
+}
 
 - (void)displayAlert:(NSString *)alertMessage {
     UIAlertController *alert= [UIAlertController alertControllerWithTitle:@"Error"
@@ -84,57 +93,95 @@ static NSInteger feedCount = 20;
 #pragma mark Networking
 
 - (void)fetchInstagramPictures {
-    if (self.isValidSession) {
-        [self getUsersInstagramPictures:self.nextMaxId];
-    } else {
-        [self getInstagramPicturesNearBy:self.currentLocation.coordinate with:self.nextMaxId];
-    }
+//    if (self.isValidSession) {
+//        [self getUsersInstagramPictures];
+//    } else {
+        [self getInstagramPicturesNearBy:self.currentLocation.coordinate];
+//    }
 }
 
-- (void)getInstagramPicturesNearBy:(CLLocationCoordinate2D)coordinate with:(NSString *)maxID {
-    ViewController *__weak weakSelf = self;
+- (void)getInstagramPicturesNearBy:(CLLocationCoordinate2D)coordinate {
+    [self displaySpinner];
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:InstagramLocatoinBaseURL]];
+//    [request addValue:[NSString stringWithFormat:@"%f", coordinate.latitude]  forHTTPHeaderField:@"lat"];
+//    [request addValue:[NSString stringWithFormat:@"%f", coordinate.longitude] forHTTPHeaderField:@"lng"];
+//    [request addValue:[[InstagramEngine sharedEngine] accessToken] forHTTPHeaderField:@"access_token"];
+
+    NSString *link = [NSString stringWithFormat:@"https://api.instagram.com/v1/locations/search?lat=%@&lng=%@&access_token=%@", [NSString stringWithFormat:@"%f", coordinate.latitude], [NSString stringWithFormat:@"%f", coordinate.longitude], [[InstagramEngine sharedEngine] accessToken]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:link]];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
-    [[InstagramEngine sharedEngine] getMediaAtLocation:coordinate
-                                                 count:feedCount
-                                                 maxId:maxID
-                                              distance:100
-                                           withSuccess:^(NSArray<InstagramMedia *> * _Nonnull media, InstagramPaginationInfo * _Nonnull paginationInfo) {
-                                               if (media) {
-                                                   [weakSelf.spinner stopAnimating];
-                                                   weakSelf.nextMaxId = paginationInfo.nextMaxId;
-                                                   [self.instagramPictures addObjectsFromArray:media];
-                                                   [self.collectionView reloadData];
-                                               }
-                                           } failure:^(NSError * _Nonnull error, NSInteger serverStatusCode) {
-                                               if (error) {
-                                                   NSLog(@"Error %@\n serverStatusCode %ld", error.description, (long)serverStatusCode);
-                                               }
-                                               [weakSelf.spinner stopAnimating];
-                                               [self displayAlert:@"Failed to get Instagram Pictures"];
-                                           }];
+    [[session dataTaskWithRequest:request
+                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    if (!error && data) {
+                        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                                             options:0
+                                                                               error:nil];
+                        NSLog(@"LOCATION: %@", dict);
+                    } else {
+                        NSLog(@"Error: %@", error.description);
+                        [self displayAlert:@"Failed to get Instagram Pictures"];
+                    }
+                }] resume];
+    
+//    ViewController *__weak weakSelf = self;
+//    
+//    [[InstagramEngine sharedEngine] getMediaAtLocation:coordinate
+//                                                 count:feedCount
+//                                                 maxId:maxID
+//                                              distance:100
+//                                           withSuccess:^(NSArray<InstagramMedia *> * _Nonnull media, InstagramPaginationInfo * _Nonnull paginationInfo) {
+//                                               if (media) {
+//                                                   [weakSelf.spinner stopAnimating];
+//                                                   weakSelf.nextMaxId = paginationInfo.nextMaxId;
+//                                                   [self.instagramPictures addObjectsFromArray:media];
+//                                                   [self.collectionView reloadData];
+//                                               }
+//                                           } failure:^(NSError * _Nonnull error, NSInteger serverStatusCode) {
+//                                               if (error) {
+//                                                   NSLog(@"Error %@\n serverStatusCode %ld", error.description, (long)serverStatusCode);
+//                                               }
+//                                               [weakSelf.spinner stopAnimating];
+//                                               [self displayAlert:@"Failed to get Instagram Pictures"];
+//                                           }];
 }
 
-- (void)getUsersInstagramPictures:(NSString *)maxID {
+- (void)getUsersInstagramPictures {
+    [self displaySpinner];
+    NSString *link = [InstagramUserFeedBaseURL stringByAppendingString:[[InstagramEngine sharedEngine] accessToken]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:link]];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    
+    [[session dataTaskWithRequest:request
+                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+          if (!error && data) {
+              NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                                   options:0
+                                                                     error:nil];
+              [self parseUsersResponse:dict];
+            } else {
+              NSLog(@"Error: %@", error.description);
+              [self displayAlert:@"Failed to get Instagram Pictures"];
+          }
+      }] resume];
+}
 
-    if ([[InstagramEngine sharedEngine] accessToken]) {
-        ViewController *__weak weakSelf = self;
+- (void)parseLocationResponse:(NSDictionary *)responseDict {
+    
+    [self updateCollectionView];
+}
 
-        [[InstagramEngine sharedEngine] getSelfFeedWithCount:feedCount
-                                                       maxId:maxID
-                                                     success:^(NSArray<InstagramMedia *> * _Nonnull media, InstagramPaginationInfo * _Nonnull paginationInfo) {
-                                                           weakSelf.nextMaxId = paginationInfo.nextMaxId;
-                                                           [self.instagramPictures addObjectsFromArray:media];
-                                                           [self.collectionView reloadData];
-                                                       } failure:^(NSError * _Nonnull error, NSInteger serverStatusCode) {
-                                                           if (error) {
-                                                               NSLog(@"FUCK %@\n serverStatusCode %ld", error.description, (long)serverStatusCode);
-                                                           }
-                                                           [self displayAlert:@"Failed to get Instagram Pictures"];
-                                                       }];
-    } else {
-        [self displayAlert:@"Please Log In again"];
+- (void)parseUsersResponse:(NSDictionary *)responseDict {
+    for (NSDictionary *imageObjects in responseDict[@"data"]) {
+        NSDictionary *imageQuality = imageObjects[@"images"];
+        
+        Instagram *instagram = [[Instagram alloc] init];
+        instagram.thumbnailURL = [imageQuality[@"thumbnail"] objectForKey:@"url"];
+        instagram.lowResolutionURL = [imageQuality[@"low_resolution"] objectForKey:@"url"];
+        
+        [self.instagramPictures addObject:instagram];
     }
-
+    [self updateCollectionView];
 }
 
 - (void)retrieveInstagramPicturesPostAuthorization {
@@ -197,7 +244,9 @@ static NSInteger feedCount = 20;
         LoginViewController *loginVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
         loginVC.fetchDelegate = self;
         [self presentViewController:loginVC animated:YES completion:^{
-            [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURL]]];
+//            [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURL]]];
+            [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURLForScope:InstagramKitLoginScopeBasic]]];
+            
         }];
     }
 }
