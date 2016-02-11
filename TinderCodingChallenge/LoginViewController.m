@@ -48,7 +48,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark UI
+#pragma mark Visual
 
 - (void)makeButtonPretty {
     self.backButton.backgroundColor = [UIColor greenColor];

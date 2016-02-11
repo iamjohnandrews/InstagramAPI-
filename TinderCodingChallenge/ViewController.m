@@ -39,7 +39,7 @@ static NSString *InstagramUserFeedBaseURL = @"https://api.instagram.com/v1/users
     [self setUpNavBarUI];
 }
 
-#pragma mark UI
+#pragma mark Visual
 
 - (void)updateCollectionView {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -76,7 +76,7 @@ static NSString *InstagramUserFeedBaseURL = @"https://api.instagram.com/v1/users
 }
 
 - (void)displaySpinner {
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.spinner.center = self.view.center;
     self.spinner.color = [UIColor orangeColor];
     [self.collectionView addSubview: self.spinner];
@@ -169,7 +169,6 @@ static NSString *InstagramUserFeedBaseURL = @"https://api.instagram.com/v1/users
 - (IBAction)refreshTapped:(UIBarButtonItem *)sender {
     [self fetchInstagramPictures];
 }
-
 
 #pragma mark Navigation
  
