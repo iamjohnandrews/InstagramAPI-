@@ -20,7 +20,6 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 @property (strong, nonatomic) NSMutableArray *instagramPictures;
 @property (nonatomic) BOOL isValidSession;
 @property (strong, nonatomic) UIActivityIndicatorView *spinner;
-@property (strong, nonatomic) CLLocation *currentLocation;
 
 @end
 
@@ -30,7 +29,6 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
     [super viewDidLoad];
 
     self.isValidSession = [[InstagramEngine sharedEngine] isSessionValid];
-    [self setUpLocationManager];
     
     self.collectionView.dataSource = self;
     self.instagramPictures = [NSMutableArray new];
@@ -83,6 +81,7 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 - (void)displaySpinner {
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.spinner.center = self.view.center;
+    self.spinner.color = [UIColor orangeColor];
     [self.collectionView addSubview: self.spinner];
     [self.collectionView bringSubviewToFront:self.spinner];
     self.spinner.hidesWhenStopped = YES;
@@ -93,57 +92,9 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 #pragma mark Networking
 
 - (void)fetchInstagramPictures {
-//    if (self.isValidSession) {
-//        [self getUsersInstagramPictures];
-//    } else {
-        [self getInstagramPicturesNearBy:self.currentLocation.coordinate];
-//    }
-}
-
-- (void)getInstagramPicturesNearBy:(CLLocationCoordinate2D)coordinate {
-    [self displaySpinner];
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:InstagramLocatoinBaseURL]];
-//    [request addValue:[NSString stringWithFormat:@"%f", coordinate.latitude]  forHTTPHeaderField:@"lat"];
-//    [request addValue:[NSString stringWithFormat:@"%f", coordinate.longitude] forHTTPHeaderField:@"lng"];
-//    [request addValue:[[InstagramEngine sharedEngine] accessToken] forHTTPHeaderField:@"access_token"];
-
-    NSString *link = [NSString stringWithFormat:@"https://api.instagram.com/v1/locations/search?lat=%@&lng=%@&access_token=%@", [NSString stringWithFormat:@"%f", coordinate.latitude], [NSString stringWithFormat:@"%f", coordinate.longitude], [[InstagramEngine sharedEngine] accessToken]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:link]];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    
-    [[session dataTaskWithRequest:request
-                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                    if (!error && data) {
-                        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
-                                                                             options:0
-                                                                               error:nil];
-                        NSLog(@"LOCATION: %@", dict);
-                    } else {
-                        NSLog(@"Error: %@", error.description);
-                        [self displayAlert:@"Failed to get Instagram Pictures"];
-                    }
-                }] resume];
-    
-//    ViewController *__weak weakSelf = self;
-//    
-//    [[InstagramEngine sharedEngine] getMediaAtLocation:coordinate
-//                                                 count:feedCount
-//                                                 maxId:maxID
-//                                              distance:100
-//                                           withSuccess:^(NSArray<InstagramMedia *> * _Nonnull media, InstagramPaginationInfo * _Nonnull paginationInfo) {
-//                                               if (media) {
-//                                                   [weakSelf.spinner stopAnimating];
-//                                                   weakSelf.nextMaxId = paginationInfo.nextMaxId;
-//                                                   [self.instagramPictures addObjectsFromArray:media];
-//                                                   [self.collectionView reloadData];
-//                                               }
-//                                           } failure:^(NSError * _Nonnull error, NSInteger serverStatusCode) {
-//                                               if (error) {
-//                                                   NSLog(@"Error %@\n serverStatusCode %ld", error.description, (long)serverStatusCode);
-//                                               }
-//                                               [weakSelf.spinner stopAnimating];
-//                                               [self displayAlert:@"Failed to get Instagram Pictures"];
-//                                           }];
+    if (self.isValidSession) {
+        [self getUsersInstagramPictures];
+    }
 }
 
 - (void)getUsersInstagramPictures {
@@ -166,10 +117,6 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
       }] resume];
 }
 
-- (void)parseLocationResponse:(NSDictionary *)responseDict {
-    
-    [self updateCollectionView];
-}
 
 - (void)parseUsersResponse:(NSDictionary *)responseDict {
     for (NSDictionary *imageObjects in responseDict[@"data"]) {
@@ -189,50 +136,19 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
     [self setUpNavBarUI];
 }
 
-#pragma mark - CLLocation Manager Delegate
-
-- (void)setUpLocationManager {
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    
-        //assumes, for this demo app, that user always accepts so no delegate method didChangeAuthorizationStatus:
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways ||
-        [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        [self.locationManager startUpdatingLocation];
-    } else {
-        [self.locationManager requestWhenInUseAuthorization];
-    }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    [self.spinner stopAnimating];
-    [self displayAlert:@"Failed to Get Your Location"];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    if (newLocation) {
-        self.currentLocation = newLocation;
-        [self fetchInstagramPictures];
-        
-        [self.locationManager stopUpdatingLocation];
-        self.locationManager = nil;
-    }
-}
-
-
 #pragma mark CollectionView DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    NSLog(@"number of Instagram photos = %lu", (unsigned long)self.instagramPictures.count);
     return self.instagramPictures.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     GramCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"gram" forIndexPath:indexPath];
 
-    InstagramMedia *media = self.instagramPictures[indexPath.row];
+    Instagram *media = self.instagramPictures[indexPath.row];
     cell.imageURL = media.thumbnailURL;
-    cell.bigImageURL = media.standardResolutionImageURL;
-    cell.location = media.locationName;
+    cell.bigImageURL = media.lowResolutionURL;
     
     return cell;
 }
@@ -244,9 +160,7 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
         LoginViewController *loginVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
         loginVC.fetchDelegate = self;
         [self presentViewController:loginVC animated:YES completion:^{
-//            [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURL]]];
-            [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURLForScope:InstagramKitLoginScopeBasic]]];
-            
+            [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURL]]];
         }];
     }
 }
@@ -264,10 +178,8 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
     
     if ([segue.identifier isEqualToString:@"collectionToBigImageSegue"]) {
         BigImageViewController *bigImageVC = [[BigImageViewController alloc] init];
-        bigImageVC.bigImageURL = senderCell.bigImageURL;
-        bigImageVC.title = senderCell.location;
+        bigImageVC.bigImageURL = [NSURL URLWithString:senderCell.bigImageURL];
     }
-    
 }
  
 

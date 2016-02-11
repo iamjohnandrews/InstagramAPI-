@@ -20,7 +20,6 @@
 		7FEF7BBA1C6A4F35001DE497 /* BigImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7BB91C6A4F35001DE497 /* BigImageViewController.m */; };
 		7FEF7BBD1C6A57A1001DE497 /* GramCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7BBC1C6A57A1001DE497 /* GramCollectionViewCell.m */; };
 		7FEF7BC11C6A6465001DE497 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7BC01C6A6465001DE497 /* LoginViewController.m */; };
-		7FEF7BC31C6A6E83001DE497 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FEF7BC21C6A6E83001DE497 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +75,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FEF7BC31C6A6E83001DE497 /* CoreLocation.framework in Frameworks */,
 				1FC66E37F4BF3FC53D1D051E /* libPods-TinderCodingChallenge.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,16 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
 #import "BigImageViewController.h"
 #import "GramCollectionViewCell.h"
 #import "LoginViewController.h"
 
-@interface ViewController : UIViewController <UICollectionViewDataSource, CLLocationManagerDelegate, FetchInstagramPicsAfterAuthorization>
+@interface ViewController : UIViewController <UICollectionViewDataSource, FetchInstagramPicsAfterAuthorization>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *loginButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
-@property (strong, nonatomic) CLLocationManager *locationManager;
 
 - (IBAction)loginTapped:(UIBarButtonItem *)sender;
 

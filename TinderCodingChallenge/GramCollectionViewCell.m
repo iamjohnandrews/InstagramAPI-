@@ -11,8 +11,8 @@
 
 @implementation GramCollectionViewCell
 
-- (void)setImageURL:(NSURL *)imageURL {
-    [self.instagramImageView setImageWithURL:imageURL];
+- (void)setImageURL:(NSString *)imageURL {
+    [self.instagramImageView setImageWithURL:[NSURL URLWithString:imageURL]];
 }
 
 @end
