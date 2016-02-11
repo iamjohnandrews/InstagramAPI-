@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1FC66E37F4BF3FC53D1D051E /* libPods-TinderCodingChallenge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF985848104329B4478AAFBE /* libPods-TinderCodingChallenge.a */; };
 		7F6A181D1C6CDB1E008749C7 /* Instagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6A181C1C6CDB1E008749C7 /* Instagram.m */; };
+		7FD9FE1D1C6D41600038FC37 /* SpinnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD9FE1C1C6D41600038FC37 /* SpinnerView.m */; };
 		7FEF7B861C697DE8001DE497 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7B851C697DE8001DE497 /* main.m */; };
 		7FEF7B891C697DE8001DE497 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7B881C697DE8001DE497 /* AppDelegate.m */; };
 		7FEF7B8C1C697DE8001DE497 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEF7B8B1C697DE8001DE497 /* ViewController.m */; };
@@ -43,6 +44,8 @@
 		7C7CF8CA8A66C3CFDB75CA41 /* Pods-TinderCodingChallenge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderCodingChallenge.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TinderCodingChallenge/Pods-TinderCodingChallenge.debug.xcconfig"; sourceTree = "<group>"; };
 		7F6A181B1C6CDB1E008749C7 /* Instagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instagram.h; sourceTree = "<group>"; };
 		7F6A181C1C6CDB1E008749C7 /* Instagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Instagram.m; sourceTree = "<group>"; };
+		7FD9FE1B1C6D41600038FC37 /* SpinnerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpinnerView.h; sourceTree = "<group>"; };
+		7FD9FE1C1C6D41600038FC37 /* SpinnerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpinnerView.m; sourceTree = "<group>"; };
 		7FEF7B811C697DE8001DE497 /* TinderCodingChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderCodingChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FEF7B851C697DE8001DE497 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7FEF7B871C697DE8001DE497 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 			children = (
 				7FEF7BBB1C6A57A1001DE497 /* GramCollectionViewCell.h */,
 				7FEF7BBC1C6A57A1001DE497 /* GramCollectionViewCell.m */,
+				7FD9FE1B1C6D41600038FC37 /* SpinnerView.h */,
+				7FD9FE1C1C6D41600038FC37 /* SpinnerView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -377,6 +382,7 @@
 			files = (
 				7FEF7B8C1C697DE8001DE497 /* ViewController.m in Sources */,
 				7FEF7BBD1C6A57A1001DE497 /* GramCollectionViewCell.m in Sources */,
+				7FD9FE1D1C6D41600038FC37 /* SpinnerView.m in Sources */,
 				7FEF7BC11C6A6465001DE497 /* LoginViewController.m in Sources */,
 				7FEF7B891C697DE8001DE497 /* AppDelegate.m in Sources */,
 				7F6A181D1C6CDB1E008749C7 /* Instagram.m in Sources */,

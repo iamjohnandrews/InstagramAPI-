@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "InstagramKit.h"
 #import "Instagram.h"
+#import "SpinnerView.h"
 
 static NSString *CLIENT_ID = @"ae97b75b4af64898b7077cd7ecefd21d";
 static NSString *CLIENT_SECRET = @"20fa3ad5d4934f94aaebc366244cc588";
@@ -17,7 +18,7 @@ static NSString *InstagramUserFeedBaseURL = @"https://api.instagram.com/v1/users
 @interface ViewController ()
 @property (strong, nonatomic) NSMutableArray *instagramPictures;
 @property (nonatomic) BOOL isValidSession;
-@property (strong, nonatomic) UIActivityIndicatorView *spinner;
+@property (strong, nonatomic) SpinnerView *spinner;
 
 @end
 
@@ -76,13 +77,10 @@ static NSString *InstagramUserFeedBaseURL = @"https://api.instagram.com/v1/users
 }
 
 - (void)displaySpinner {
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.spinner = [[SpinnerView alloc] init];
     self.spinner.center = self.view.center;
-    self.spinner.color = [UIColor orangeColor];
     [self.collectionView addSubview: self.spinner];
     [self.collectionView bringSubviewToFront:self.spinner];
-    self.spinner.hidesWhenStopped = YES;
-    self.spinner.hidden = NO;
     [self.spinner startAnimating];
 }
 

@@ -8,9 +8,10 @@
 
 #import "LoginViewController.h"
 #import "InstagramKit.h"
+#import "SpinnerView.h"
 
 @interface LoginViewController ()
-@property (strong, nonatomic) UIActivityIndicatorView *spinner;
+@property (strong, nonatomic) SpinnerView *spinner;
 
 @end
 
@@ -51,19 +52,17 @@
 #pragma mark Visual
 
 - (void)makeButtonPretty {
-    self.backButton.backgroundColor = [UIColor greenColor];
+    self.backButton.backgroundColor = [UIColor lightGrayColor];
     self.backButton.layer.borderColor = [[UIColor blueColor] CGColor];
     self.backButton.layer.borderWidth = 2;
     self.backButton.layer.cornerRadius = 7;
 }
 
 - (void)displaySpinner {
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.spinner = [[SpinnerView alloc] init];
     self.spinner.center = self.view.center;
     [self.webView addSubview: self.spinner];
     [self.webView bringSubviewToFront:self.spinner];
-    self.spinner.hidesWhenStopped = YES;
-    self.spinner.hidden = NO;
     [self.spinner startAnimating];
 }
 
