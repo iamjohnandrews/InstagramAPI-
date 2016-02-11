@@ -20,8 +20,10 @@
 
 }
 
-- (void)setBigImageURL:(NSURL *)bigImageURL {
-    [self.bigImageView setImageWithURL:bigImageURL];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.bigImageView setImageWithURL:[NSURL URLWithString:self.bigImageURL]];
+//    [self.bigImageView setImageWithURL:[NSURL URLWithString:@"https://scontent.cdninstagram.com/t51.2885-15/e15/11377500_1581138258815108_1395502027_n.jpg?ig_cache_key=MTAwMjU5NjY1Mzc2Njg1NzY0Nw%3D%3D.2"]];
 }
 
 @end

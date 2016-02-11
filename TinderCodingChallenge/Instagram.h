@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface Instagram : NSObject
-@property (strong, nonatomic) NSString *thumbnailURL;
+@property (strong, nonatomic) NSString *standardResolutionURL;
 @property (strong, nonatomic) NSString *lowResolutionURL;
 @end

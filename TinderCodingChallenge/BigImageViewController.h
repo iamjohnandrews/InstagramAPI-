@@ -10,5 +10,5 @@
 
 @interface BigImageViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *bigImageView;
-@property (strong, nonatomic) NSURL *bigImageURL;
+@property (strong, nonatomic) NSString *bigImageURL;
 @end

@@ -12,9 +12,7 @@
 
 static NSString *CLIENT_ID = @"ae97b75b4af64898b7077cd7ecefd21d";
 static NSString *CLIENT_SECRET = @"20fa3ad5d4934f94aaebc366244cc588";
-
 static NSString *InstagramUserFeedBaseURL = @"https://api.instagram.com/v1/users/self/media/recent/?access_token=";
-static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locations/search";
 
 @interface ViewController ()
 @property (strong, nonatomic) NSMutableArray *instagramPictures;
@@ -28,8 +26,10 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.isValidSession = [[InstagramEngine sharedEngine] isSessionValid];
-    
+    self.isValidSession = [[InstagramEngine sharedEngine] accessToken] ? YES : NO;
+    if (self.isValidSession) {
+        [self fetchInstagramPictures];
+    } 
     self.collectionView.dataSource = self;
     self.instagramPictures = [NSMutableArray new];
 }
@@ -37,9 +37,6 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self setUpNavBarUI];
-    if (!self.title) {
-        [self displaySpinner];
-    }
 }
 
 #pragma mark UI
@@ -51,8 +48,8 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
     }];
 }
 
-- (void)displayAlert:(NSString *)alertMessage {
-    UIAlertController *alert= [UIAlertController alertControllerWithTitle:@"Error"
+- (void)displayAlert:(NSString *)alertMessage forMessageType:(NSString *)messageTpye {
+    UIAlertController *alert= [UIAlertController alertControllerWithTitle:messageTpye
                                                                   message:alertMessage
                                                            preferredStyle:UIAlertControllerStyleAlert];
     
@@ -112,7 +109,7 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
               [self parseUsersResponse:dict];
             } else {
               NSLog(@"Error: %@", error.description);
-              [self displayAlert:@"Failed to get Instagram Pictures"];
+              [self displayAlert:@"Failed to get Instagram Pictures" forMessageType:@"Error"];
           }
       }] resume];
 }
@@ -123,7 +120,7 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
         NSDictionary *imageQuality = imageObjects[@"images"];
         
         Instagram *instagram = [[Instagram alloc] init];
-        instagram.thumbnailURL = [imageQuality[@"thumbnail"] objectForKey:@"url"];
+        instagram.standardResolutionURL = [imageQuality[@"standard_resolution"] objectForKey:@"url"];
         instagram.lowResolutionURL = [imageQuality[@"low_resolution"] objectForKey:@"url"];
         
         [self.instagramPictures addObject:instagram];
@@ -132,6 +129,7 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 }
 
 - (void)retrieveInstagramPicturesPostAuthorization {
+    self.isValidSession = [[InstagramEngine sharedEngine] accessToken] ? YES : NO;
     [self fetchInstagramPictures];
     [self setUpNavBarUI];
 }
@@ -139,7 +137,6 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 #pragma mark CollectionView DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSLog(@"number of Instagram photos = %lu", (unsigned long)self.instagramPictures.count);
     return self.instagramPictures.count;
 }
 
@@ -147,8 +144,8 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
     GramCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"gram" forIndexPath:indexPath];
 
     Instagram *media = self.instagramPictures[indexPath.row];
-    cell.imageURL = media.thumbnailURL;
-    cell.bigImageURL = media.lowResolutionURL;
+    cell.imageURL = media.lowResolutionURL;
+    cell.bigImageURL = media.standardResolutionURL;
     
     return cell;
 }
@@ -162,6 +159,10 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
         [self presentViewController:loginVC animated:YES completion:^{
             [loginVC.webView loadRequest:[NSURLRequest requestWithURL:[[InstagramEngine sharedEngine] authorizationURL]]];
         }];
+    } else {
+        [[InstagramEngine sharedEngine] logout];
+        self.isValidSession = NO;
+        [self setUpNavBarUI];
     }
 }
 
@@ -173,12 +174,10 @@ static NSString *InstagramLocatoinBaseURL = @"https://api.instagram.com/v1/locat
 #pragma mark Navigation
  
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(GramCollectionViewCell *)senderCell {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"collectionToBigImageSegue"]) {
-        BigImageViewController *bigImageVC = [[BigImageViewController alloc] init];
-        bigImageVC.bigImageURL = [NSURL URLWithString:senderCell.bigImageURL];
+        BigImageViewController *bigImageVC = segue.destinationViewController;
+        bigImageVC.bigImageURL = senderCell.bigImageURL;
     }
 }
  
